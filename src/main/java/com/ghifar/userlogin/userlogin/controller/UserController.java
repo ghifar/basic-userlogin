@@ -20,6 +20,7 @@ public class UserController {
     private UserRepository userRepository;
 
 
+    //preauthorize will execute do filter internal
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser){
