@@ -60,7 +60,7 @@ public class AuthController {
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsernameOrEmail(),loginRequest.getPassword()));
 
         //notice that this method execute at JwtAuthenticationFilter class too..
-        // yang di doFilterInternal itu dipake ketika user udah dapat jwtnya. ini kan kita baru buat jwt.. so ini yg dipake untuk saat ini
+        // idk what's the use we execute this in here.....
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         String jwt= tokenProvider.generateToken(authentication);

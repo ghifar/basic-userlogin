@@ -31,12 +31,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger logger= LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-
+    //every call to API that executed will execute this method first
     @Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
         try {
             String jwt= getJwtFromRequest(httpServletRequest);
-            //this if statement only execute when user logged in :)))
+            //this if statement only execute when user already logged in :)))
             if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)){
                 Long userId= tokenProvider.getUserIdFromJwt(jwt);
 
@@ -52,6 +52,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 //authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpServletRequest));
 
                 //this SecurityContextHolder using ThreadLocal. see docs i think it will holds the authorities and userDetails and will be use to know if the user authorize for some api...
+                //if you dont set this, you wont able to pass the authorization to access some API when doFilter execute it's job
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
@@ -65,6 +66,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         //(https://www.javacodegeeks.com/2018/02/securitycontext-securitycontextholder-spring-security.html) < its just the context. there are some orders executed based on spring docs.
         //same context > (https://www.javatpoint.com/servlet-filter)
         //another example (https://stackoverflow.com/questions/1323009/is-dofilter-executed-before-or-after-the-servlets-work-is-done)
+        //https://stackoverflow.com/questions/41480102/how-spring-security-filter-chain-works
+        //basically this method will run all filter including security purpose to exexuted all that we've been set above
+        //this method will throw all security exception before controller gets executed
         filterChain.doFilter(httpServletRequest,httpServletResponse);
     }
 

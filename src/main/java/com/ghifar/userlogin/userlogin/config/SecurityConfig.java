@@ -1,5 +1,7 @@
 package com.ghifar.userlogin.userlogin.config;
-/* This class for security Configuration*/
+/* This class for security Configuration
+* will run at compiletime
+* */
 
 import com.ghifar.userlogin.userlogin.security.CustomUserDetailsService;
 import com.ghifar.userlogin.userlogin.security.JwtAuthenticationEntryPoint;
